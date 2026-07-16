@@ -2,9 +2,9 @@ name: Test and Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"] # Pushing to main triggers production deployment
+    branches: ["main"]
   pull_request:
-    branches: ["main"] # PRs act as staging environments (runs tests only)
+    branches: ["main"]
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24' # Fixes the Node.js deprecation warning
           
       - name: Install Dependencies
         run: npm ci
@@ -25,7 +25,6 @@ jobs:
         run: npm test
 
   deploy:
-    # Only deploy if the tests passed AND it's a push to the main branch
     needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -44,11 +43,13 @@ jobs:
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        
+        with:
+          enablement: true # Forces GitHub to enable Pages for Actions
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './src' # Tells GitHub Pages to only deploy the contents of the src/ folder
+          path: './src' # Note: Ensure your index.html is inside a 'src' folder
           
       - name: Deploy to GitHub Pages
         id: deployment
