@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<script>
+  tailwind.config = {
+    darkMode: ['class', '[data-theme="dark"]'],
+    theme: {
+      extend: {
+        colors: {
+          ink: 'var(--ink)',
+          surface: 'var(--surface)',
+          surface2: 'var(--surface2)',
+          line: 'var(--line)',
+          fg: 'var(--fg)',
+          muted: 'var(--muted)',
+          amber: 'var(--amber)',
+          amberhover: 'var(--amberhover)',
+          teal: 'var(--teal)',
+          violet: 'var(--violet)',
+          coral: 'var(--coral)',
+        }
+      }
+    }
+  }
+</script>
+<title>Admin — Joseph Micah Portfolio</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<!-- Supabase JS — must come before data.js -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/data.js"></script>
+</head>
+<body class="bg-ink text-fg antialiased min-h-screen">
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="min-h-screen flex items-center justify-center px-6">
+  <div class="w-full max-w-sm">
+    <p class="font-mono text-amber text-center mb-2">◤ jmicah.dev</p>
+    <div class="bg-surface border border-line rounded-lg p-8">
+      <h1 id="auth-title" class="font-mono text-lg text-fg mb-1">Admin login</h1>
+      <p id="auth-copy" class="text-muted text-sm mb-6">Use your Supabase account email and password.</p>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label for="login-email" class="block font-mono text-xs text-muted mb-1.5">email</label>
+          <input id="login-email" type="email" required autocomplete="username" class="w-full bg-ink border border-line rounded px-4 py-3 text-fg focus:border-amber outline-none" placeholder="you@example.com">
+        </div>
+        <div>
+          <label for="login-password" class="block font-mono text-xs text-muted mb-1.5">password</label>
+          <input id="login-password" type="password" required autocomplete="current-password" class="w-full bg-ink border border-line rounded px-4 py-3 text-fg focus:border-amber outline-none" placeholder="Your password">
+        </div>
+        <p id="login-error" class="hidden text-coral text-xs font-mono">Incorrect email or password.</p>
+        <p id="login-info" class="hidden text-teal text-xs font-mono"></p>
+        <button id="auth-submit" type="submit" class="w-full bg-amber hover:bg-amberhover text-ink font-semibold py-3 rounded">Log in</button>
+      </form>
+      <button id="auth-mode-toggle" type="button" class="w-full mt-4 text-muted hover:text-fg font-mono text-xs">Create admin account</button>
+      <a href="index.html" class="block text-center mt-6 text-muted hover:text-fg font-mono text-xs">← Back to portfolio</a>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+
+  <header class="sticky top-0 z-40 bg-ink/90 backdrop-blur-sm border-b border-line">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="index.html" class="font-mono font-semibold text-lg tracking-tight text-fg">
+        <span class="text-amber">◤</span> jmicah<span class="text-muted">.dev</span> <span class="text-muted font-normal text-sm">/ admin</span>
+      </a>
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle" aria-label="Toggle light and dark theme" class="theme-toggle-track relative w-10 rounded-full border border-line" style="height:22px;">
+          <span class="theme-toggle-thumb absolute top-0.5 left-0.5 w-4 h-4 rounded-full block"></span>
+        </button>
+        <a href="index.html" target="_blank" class="font-mono text-xs border border-line hover:border-teal text-fg px-3 py-2 rounded">View site ↗</a>
+        <button id="btn-logout" class="font-mono text-xs border border-coral text-coral hover:bg-coral/10 px-3 py-2 rounded">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-6 py-10">
+    <p class="font-mono text-xs text-muted mb-6">Changes save to Supabase immediately and appear on your live site within seconds.</p>
+
+    <!-- TABS -->
+    <div class="flex flex-wrap gap-2 mb-10 font-mono text-sm">
+      <button data-tab="profile"      class="admin-tab is-active border border-line px-4 py-2 rounded">Profile &amp; branding</button>
+      <button data-tab="projects"     class="admin-tab border border-line px-4 py-2 rounded">Projects</button>
+      <button data-tab="experience"   class="admin-tab border border-line px-4 py-2 rounded">Experience</button>
+      <button data-tab="education"    class="admin-tab border border-line px-4 py-2 rounded">Education</button>
+      <button data-tab="skills"       class="admin-tab border border-line px-4 py-2 rounded">Skills</button>
+      <button data-tab="testimonials" class="admin-tab border border-line px-4 py-2 rounded">Testimonials</button>
+      <button data-tab="settings"     class="admin-tab border border-line px-4 py-2 rounded">Settings</button>
+    </div>
+
+    <!-- PROFILE PANEL -->
+    <div id="panel-profile" class="space-y-10">
+      <div class="bg-surface border border-line rounded-lg p-7">
+        <h2 class="font-mono text-lg text-fg mb-1">Photo</h2>
+        <p class="text-muted text-sm mb-5">Shown in the About section of your portfolio.</p>
+        <div class="flex items-center gap-6">
+          <img id="photo-preview" src="assets/Cherop.png" alt="" class="w-24 h-24 rounded-full object-cover border border-line">
+          <div>
+            <input id="photo-input" type="file" accept="image/*" class="block text-sm text-muted font-mono file:mr-3 file:py-2 file:px-4 file:rounded file:border file:border-line file:bg-surface2 file:text-fg file:text-sm file:cursor-pointer">
+            <p class="text-muted text-xs mt-2">JPG or PNG, ideally square, under 2 MB.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-surface border border-line rounded-lg p-7">
+        <h2 class="font-mono text-lg text-fg mb-1">Resume</h2>
+        <p class="text-muted text-sm mb-5">Powers the "Download PDF" button. Uploading a PDF also auto-fills Experience, Education, and Skills.</p>
+        <p id="resume-status" class="font-mono text-xs text-teal mb-4">No resume uploaded yet.</p>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-mono text-xs text-muted mb-1.5">Upload a PDF</label>
+            <input id="resume-input" type="file" accept="application/pdf" class="block text-sm text-muted font-mono file:mr-3 file:py-2 file:px-4 file:rounded file:border file:border-line file:bg-surface2 file:text-fg file:text-sm file:cursor-pointer">
+          </div>
+          <form id="resume-url-form" class="flex items-end gap-2">
+            <div class="flex-1">
+              <label for="resume-url-input" class="block font-mono text-xs text-muted mb-1.5">…or paste a link instead</label>
+              <input id="resume-url-input" type="text" placeholder="https://…/resume.pdf" class="w-full bg-ink border border-line rounded px-3 py-2.5 text-sm text-fg focus:border-amber outline-none">
+            </div>
+            <button type="submit" class="font-mono text-xs border border-line hover:border-teal px-3 py-2.5 rounded text-fg">Save</button>
+          </form>
+        </div>
+        <div class="flex flex-wrap items-center gap-3 mt-4">
+          <button id="btn-reparse-resume" type="button" class="hidden font-mono text-xs border border-line hover:border-teal px-3 py-2 rounded text-fg">↻ Re-read PDF into Resume section</button>
+          <p id="resume-saved-msg" class="hidden text-teal font-mono text-xs">Saved.</p>
+        </div>
+      </div>
+
+      <form id="profile-form" class="bg-surface border border-line rounded-lg p-7 space-y-6">
+        <div>
+          <h2 class="font-mono text-lg text-fg mb-1">Hero &amp; about</h2>
+          <p class="text-muted text-sm mb-5">The headline and intro visitors see first.</p>
+          <div class="space-y-4">
+            <div>
+              <label class="block font-mono text-xs text-muted mb-1.5">Headline</label>
+              <input name="headline" type="text" placeholder="e.g. I Turn Messy Data Into Decisions You Can Act On." class="w-full bg-ink border border-line rounded px-4 py-2.5 text-fg focus:border-amber outline-none">
+            </div>
+            <div>
+              <label class="block font-mono text-xs text-muted mb-1.5">Subheading</label>
+              <textarea name="subhead" rows="2" placeholder="One or two sentences on how you help clients." class="w-full bg-ink border border-line rounded px-4 py-2.5 text-fg focus:border-amber outline-none"></textarea>
+            </div>
+            <div>
+              <label class="block font-mono text-xs text-muted mb-1.5">About bio</label>
+              <textarea name="bio" rows="4" placeholder="A short paragraph introducing yourself." class="w-full bg-ink border border-line rounded px-4 py-2.5 text-fg focus:border-amber outline-none"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-mono text-sm tracking-widest text-muted uppercase mb-4">Hero stats</h3>
+          <div class="grid sm:grid-cols-3 gap-4">
+            <div><label class="block font-mono text-xs text-muted mb-1.5">Stat 1 value</label><input name="stat1" type="text" placeholder="40+ hrs" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+            <div class="sm:col-span-2"><label class="block font-mono text-xs text-muted mb-1.5">Stat 1 label</label><input name="stat1Label" type="text" placeholder="saved monthly" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+            <div><label class="block font-mono text-xs text-muted mb-1.5">Stat 2 value</label><input name="stat2" type="text" placeholder="4+" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+            <div class="sm:col-span-2"><label class="block font-mono text-xs text-muted mb-1.5">Stat 2 label</label><input name="stat2Label" type="text" placeholder="BI tools" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+            <div><label class="block font-mono text-xs text-muted mb-1.5">Stat 3 value</label><input name="stat3" type="text" placeholder="100%" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+            <div class="sm:col-span-2"><label class="block font-mono text-xs text-muted mb-1.5">Stat 3 label</label><input name="stat3Label" type="text" placeholder="remote-ready" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-mono text-sm tracking-widest text-muted uppercase mb-4">Contact &amp; links</h3>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div><label class="block font-mono text-xs text-muted mb-1.5">Email</label><input name="email" type="email" placeholder="you@example.com" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+            <div><label class="block font-mono text-xs text-muted mb-1.5">WhatsApp link</label><input name="whatsapp" type="text" placeholder="https://wa.me/2547…" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+            <div><label class="block font-mono text-xs text-muted mb-1.5">Calendly link</label><input name="calendly" type="text" placeholder="https://calendly.com/…" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+            <div><label class="block font-mono text-xs text-muted mb-1.5">LinkedIn URL</label><input name="linkedin" type="text" placeholder="https://linkedin.com/in/…" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+            <div><label class="block font-mono text-xs text-muted mb-1.5">GitHub URL</label><input name="github" type="text" placeholder="https://github.com/…" class="w-full bg-ink border border-line rounded px-3 py-2 text-sm text-fg focus:border-amber outline-none"></div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 pt-2">
+          <button type="submit" class="bg-amber hover:bg-amberhover text-ink font-semibold py-2.5 px-6 rounded">Save profile</button>
+          <p id="profile-saved-msg" class="hidden text-teal font-mono text-xs">Saved.</p>
+        </div>
+      </form>
+    </div>
+
+    <!-- PROJECTS PANEL -->
+    <div id="panel-projects" class="hidden">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="font-mono text-lg text-fg">Projects</h2>
+          <p class="text-muted text-sm">Case studies shown in your Project Portfolio section.</p>
+        </div>
+        <button data-admin-add="project" class="bg-teal/10 border border-teal text-teal font-mono text-xs px-4 py-2.5 rounded hover:bg-teal/20">+ Add project</button>
+      </div>
+      <div id="list-projects" class="space-y-3"></div>
+    </div>
+
+    <!-- EXPERIENCE PANEL -->
+    <div id="panel-experience" class="hidden">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="font-mono text-lg text-fg">Experience</h2>
+          <p class="text-muted text-sm">Work history shown on your Resume. Upload a PDF in Profile to auto-fill, or add entries by hand.</p>
+        </div>
+        <button data-admin-add="experience" class="bg-teal/10 border border-teal text-teal font-mono text-xs px-4 py-2.5 rounded hover:bg-teal/20">+ Add role</button>
+      </div>
+      <div id="list-experience" class="space-y-3"></div>
+    </div>
+
+    <!-- EDUCATION PANEL -->
+    <div id="panel-education" class="hidden">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="font-mono text-lg text-fg">Education</h2>
+          <p class="text-muted text-sm">Degrees and certificates shown on your Resume.</p>
+        </div>
+        <button data-admin-add="education" class="bg-teal/10 border border-teal text-teal font-mono text-xs px-4 py-2.5 rounded hover:bg-teal/20">+ Add education</button>
+      </div>
+      <div id="list-education" class="space-y-3"></div>
+    </div>
+
+    <!-- SKILLS PANEL -->
+    <div id="panel-skills" class="hidden">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="font-mono text-lg text-fg">Skills</h2>
+          <p class="text-muted text-sm">Grouped skill tags shown on your Resume.</p>
+        </div>
+        <button data-admin-add="skill" class="bg-teal/10 border border-teal text-teal font-mono text-xs px-4 py-2.5 rounded hover:bg-teal/20">+ Add group</button>
+      </div>
+      <div id="list-skills" class="space-y-3"></div>
+    </div>
+
+    <!-- TESTIMONIALS PANEL -->
+    <div id="panel-testimonials" class="hidden">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="font-mono text-lg text-fg">Testimonials</h2>
+          <p class="text-muted text-sm">Client quotes. Hidden from the site until you add at least one.</p>
+        </div>
+        <button data-admin-add="testimonial" class="bg-teal/10 border border-teal text-teal font-mono text-xs px-4 py-2.5 rounded hover:bg-teal/20">+ Add quote</button>
+      </div>
+      <div id="list-testimonials" class="space-y-3"></div>
+    </div>
+
+    <!-- SETTINGS PANEL -->
+    <div id="panel-settings" class="hidden space-y-8">
+
+      <div class="bg-surface border border-line rounded-lg p-7">
+        <h2 class="font-mono text-lg text-fg mb-1">Password</h2>
+        <p class="text-muted text-sm mb-4">Change your admin password via the Supabase dashboard: <strong>Authentication → Users</strong>, then click your user → Reset password. Or use the magic link option to set a new one without the old password.</p>
+        <a href="https://supabase.com" target="_blank" rel="noopener" class="font-mono text-xs border border-line hover:border-teal px-4 py-2.5 rounded text-fg inline-block">Open Supabase dashboard ↗</a>
+      </div>
+
+      <div class="bg-surface border border-line rounded-lg p-7">
+        <h2 class="font-mono text-lg text-fg mb-1">Backup &amp; transfer</h2>
+        <p class="text-muted text-sm mb-5">Export a JSON snapshot of all your content, or import one (e.g. from a local backup).</p>
+        <div class="flex flex-wrap gap-3">
+          <button id="btn-export" class="font-mono text-xs border border-line hover:border-teal px-4 py-2.5 rounded text-fg">↓ Export data (.json)</button>
+          <button id="btn-import" class="font-mono text-xs border border-line hover:border-teal px-4 py-2.5 rounded text-fg">↑ Import data (.json)</button>
+        </div>
+        <input id="import-file" type="file" accept="application/json" class="hidden">
+      </div>
+
+      <div class="bg-surface border border-coral/40 rounded-lg p-7">
+        <h2 class="font-mono text-lg text-coral mb-1">Reset content</h2>
+        <p class="text-muted text-sm mb-5">Clears all projects, experience, education, skills, and testimonials from the database. Re-run <code class="font-mono text-xs text-amber">supabase-setup.sql</code> to restore starter content. This cannot be undone.</p>
+        <button id="btn-reset" class="font-mono text-xs border border-coral text-coral hover:bg-coral/10 px-4 py-2.5 rounded">Reset to defaults</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD / EDIT DIALOG -->
+<dialog id="dlg-form">
+  <div class="bg-surface border border-line rounded-lg w-[92vw] max-w-lg max-h-[85vh] overflow-y-auto p-7">
+    <div class="flex items-start justify-between mb-5">
+      <h3 id="form-title" class="font-mono text-lg text-fg"></h3>
+      <button data-close-dialog class="text-muted hover:text-fg text-xl leading-none">×</button>
+    </div>
+    <form id="entity-form" class="space-y-4"></form>
+  </div>
+</dialog>
+
+<!-- pdf.js for resume parsing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
