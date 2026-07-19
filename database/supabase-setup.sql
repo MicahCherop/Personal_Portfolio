@@ -106,6 +106,24 @@ create policy "auth write education"    on education    for all    using (auth.r
 create policy "auth write skills"       on skills       for all    using (auth.role() = 'authenticated');
 create policy "auth write testimonials" on testimonials for all    using (auth.role() = 'authenticated');
 
+
+-- ── Storage Buckets & RLS ─────────────────────────────────────
+-- Create the buckets for your file uploads
+insert into storage.buckets (id, name, public) values 
+  ('photos', 'photos', true),
+  ('resumes', 'resumes', true),
+  ('project-images', 'project-images', true)
+on conflict do nothing;
+
+-- Ensure anyone can view the images/PDFs
+create policy "Public Storage Read" on storage.objects for select using (bucket_id in ('photos', 'resumes', 'project-images'));
+
+-- Ensure only you (the admin) can upload, update, or delete files
+create policy "Admin Storage Insert" on storage.objects for insert with check (auth.role() = 'authenticated');
+create policy "Admin Storage Update" on storage.objects for update using (auth.role() = 'authenticated');
+create policy "Admin Storage Delete" on storage.objects for delete using (auth.role() = 'authenticated');
+
+
 -- ── Seed starter data ─────────────────────────────────────────
 insert into projects (title, problem, solution, result, tags, sort_order) values
   (

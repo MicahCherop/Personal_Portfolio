@@ -45,8 +45,32 @@ async function loadAll() {
    ========================================================================= */
 const loginScreen = document.getElementById('login-screen');
 const dashboard   = document.getElementById('dashboard');
+const authTitle = document.getElementById('auth-title');
+const authCopy = document.getElementById('auth-copy');
+const authSubmit = document.getElementById('auth-submit');
+const authModeToggle = document.getElementById('auth-mode-toggle');
+const authInfo = document.getElementById('login-info');
+const ADMIN_EMAIL = 'mic1dev.me@gmail.com';
+let authMode = 'login';
 
-async function showDashboard() {
+function isAllowedAdmin(session) {
+  return session?.user?.email?.toLowerCase() === ADMIN_EMAIL;
+}
+
+async function showUnauthorized() {
+  dashboard.classList.add('hidden');
+  loginScreen.classList.remove('hidden');
+  setAuthMode('login');
+  authInfo.textContent = 'This admin page is only available to the site owner.';
+  authInfo.classList.remove('hidden');
+  await DataStore.signOut();
+}
+
+async function showDashboard(session) {
+  if (!isAllowedAdmin(session)) {
+    await showUnauthorized();
+    return;
+  }
   loginScreen.classList.add('hidden');
   dashboard.classList.remove('hidden');
   await loadAll();
@@ -60,9 +84,22 @@ function showLogin() {
   document.getElementById('login-email').focus();
 }
 
+function setAuthMode(mode) {
+  authMode = mode;
+  const isSignup = mode === 'signup';
+  authTitle.textContent = isSignup ? 'Create admin account' : 'Admin login';
+  authCopy.textContent = isSignup
+    ? 'Choose an email and password for your Supabase admin account.'
+    : 'Use your Supabase account email and password.';
+  authSubmit.textContent = isSignup ? 'Create account' : 'Log in';
+  authModeToggle.textContent = isSignup ? 'I already have an admin account' : 'Create admin account';
+  document.getElementById('login-error').classList.add('hidden');
+  authInfo.classList.add('hidden');
+}
+
 // Check existing session on page load
 DataStore.onAuthChange(async session => {
-  if (session) await showDashboard();
+  if (session) await showDashboard(session);
   else showLogin();
 });
 
@@ -73,19 +110,43 @@ document.getElementById('login-form').addEventListener('submit', async ev => {
   const errEl    = document.getElementById('login-error');
   const btn      = ev.target.querySelector('button[type="submit"]');
 
+  if (email.toLowerCase() !== ADMIN_EMAIL) {
+    errEl.textContent = 'This admin page is only available to the site owner.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
   btn.disabled   = true;
   btn.textContent = 'Signing in…';
   errEl.classList.add('hidden');
+  authInfo.classList.add('hidden');
 
   try {
-    await DataStore.signIn(email, password);
-    // onAuthChange fires and calls showDashboard()
+    if (authMode === 'signup') {
+      const result = await DataStore.signUp(email, password);
+      if (result.session) {
+        await showDashboard(result.session);
+      } else {
+        setAuthMode('login');
+        authInfo.textContent = 'Account created. Check your email to confirm it, then log in.';
+        authInfo.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Log in';
+      }
+    } else {
+      await DataStore.signIn(email, password);
+      // onAuthChange fires and calls showDashboard()
+    }
   } catch (err) {
     errEl.textContent = err.message || 'Incorrect email or password.';
     errEl.classList.remove('hidden');
     btn.disabled    = false;
-    btn.textContent = 'Log in';
+    btn.textContent = authMode === 'signup' ? 'Create account' : 'Log in';
   }
+});
+
+authModeToggle.addEventListener('click', () => {
+  setAuthMode(authMode === 'signup' ? 'login' : 'signup');
 });
 
 document.getElementById('btn-logout').addEventListener('click', async () => {
@@ -145,7 +206,7 @@ function fillProfileForm() {
     if (el) el.value = p[key] || p[field] || '';
   }
   const photoEl = document.getElementById('photo-preview');
-  photoEl.src = p.photo_url || p.photoUrl || 'Cherop.png';
+  photoEl.src = p.photo_url || p.photoUrl || 'assets/Cherop.png';
   updateResumeStatus();
 }
 
@@ -259,7 +320,7 @@ document.getElementById('profile-form').addEventListener('submit', async ev => {
 });
 
 /* =========================================================================
-   PDF RESUME PARSING (unchanged logic from original admin.js)
+   PDF RESUME PARSING 
    ========================================================================= */
 async function readResumeIntoSite(fileOrBlob) {
   if (!window.pdfjsLib) {

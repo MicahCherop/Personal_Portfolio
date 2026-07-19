@@ -3,7 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Joseph Micah — Freelance Data Scientist</title>
+<script>
+  tailwind.config = {
+    darkMode: ['class', '[data-theme="dark"]'],
+    theme: {
+      extend: {
+        colors: {
+          ink: 'var(--ink)',
+          surface: 'var(--surface)',
+          surface2: 'var(--surface2)',
+          line: 'var(--line)',
+          fg: 'var(--fg)',
+          muted: 'var(--muted)',
+          amber: 'var(--amber)',
+          amberhover: 'var(--amberhover)',
+          teal: 'var(--teal)',
+          violet: 'var(--violet)',
+          coral: 'var(--coral)',
+        }
+      }
+    }
+  }
+</script>
+<title>Joseph Micah — Personal Portfolio</title>
 <meta name="description" content="Joseph Micah, freelance data scientist. I turn messy spreadsheets and databases into automated reports, live dashboards, and predictive models.">
 <meta name="keywords" content="Data Scientist, Freelance, Python, SQL, Power BI, Machine Learning, Automation, Dashboards, Nairobi">
 <meta property="og:title" content="Joseph Micah — Freelance Data Scientist">
@@ -13,10 +35,8 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 <!-- Supabase JS — must come before data.js -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="data.js"></script>
 </head>
 <body class="bg-ink text-fg antialiased">
 
@@ -66,7 +86,7 @@
   <!-- HERO -->
   <section id="top" class="relative overflow-hidden border-b border-line bg-grid bg-ink">
     <div class="absolute inset-0 bg-gradient-to-b from-ink via-ink/95 to-ink"></div>
-    <div class="relative max-w-6xl mx-auto px-6 py-24 md:py-32 grid md:grid-cols-2 gap-12 items-center">
+    <div class="relative max-w-6xl mx-auto px-6 py-20 md:py-28 grid md:grid-cols-[minmax(0,1fr)_360px] gap-12 items-center">
       <div>
         <p class="font-mono text-sm text-teal mb-4">In [01]: <span id="typed-line"></span><span class="typed-cursor">&nbsp;</span></p>
         <h1 id="hero-headline" class="text-4xl md:text-5xl font-mono font-bold leading-[1.15] text-fg"></h1>
@@ -78,7 +98,10 @@
         <div class="mt-10 flex gap-8 font-mono text-sm" id="hero-stats"></div>
       </div>
 
-      <div class="hidden md:block" aria-hidden="true">
+      <div class="hero-photo-wrap justify-self-center md:justify-self-end">
+        <img id="profile-photo" src="assets/Cherop.png" alt="Joseph Micah" class="hero-photo">
+      </div>
+      <div class="hidden" aria-hidden="true">
         <svg viewBox="0 0 420 260" class="w-full h-auto">
           <g class="scatter fill-teal" opacity=".55">
             <circle cx="40" cy="190" r="4"/><circle cx="70" cy="80" r="4"/><circle cx="95" cy="150" r="4"/>
@@ -172,9 +195,8 @@
     <div class="cell reveal">
       <p class="font-mono text-sm text-teal mb-2">In [05]: whoami()</p>
       <h2 class="text-3xl font-mono font-bold text-fg mb-8">A bit about me</h2>
-      <div class="grid md:grid-cols-3 gap-10 items-start">
-        <img id="about-photo" src="Cherop.png" alt="Joseph Micah" class="w-36 h-36 rounded-full object-cover border border-line">
-        <p id="about-bio" class="md:col-span-2 text-muted leading-relaxed text-base"></p>
+      <div class="grid gap-10 items-start">
+        <p id="about-bio" class="text-muted leading-relaxed text-base"></p>
       </div>
     </div>
   </section>
@@ -235,7 +257,6 @@
       <a id="footer-github" href="#" target="_blank" rel="noopener" aria-label="GitHub profile" class="text-muted hover:text-amber">
         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 002 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 01.1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0022 12 10 10 0 0012 2z"/></svg>
       </a>
-      <a href="admin.html" title="Admin dashboard" aria-label="Admin dashboard" class="text-muted/50 hover:text-amber font-mono text-xs">[ admin ]</a>
     </div>
   </div>
 </footer>
@@ -260,6 +281,13 @@
   </div>
 </dialog>
 
-<script src="main.js"></script>
+<!-- 1. Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<!-- 2. Your Data Layer & Utilities -->
+<script src="js/data.js"></script>
+
+<!-- 3. Your Interface Engine (This file) -->
+<script src="js/main.js"></script>
 </body>
 </html>

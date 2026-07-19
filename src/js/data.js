@@ -12,32 +12,33 @@ const SUPABASE_URL  = 'https://zvtirhvlwlsjzdqlxoms.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2dGlyaHZsd2xzanpkcWx4b21zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NzAyMzUsImV4cCI6MjA5MTA0NjIzNX0.mGEEu6Jm7eixK3PpDPeiGiXNK2pSxQbRT8mvcvOCrNI';
 
 /* =========================================================================
-   TAILWIND CONFIG (must stay in data.js so it loads before Tailwind)
+   TAILWIND CONFIG (Updated to match style.css variables)
    ========================================================================= */
 if (typeof tailwind !== 'undefined') {
   tailwind.config = {
+    darkMode: ['class', '[data-theme="dark"]'], // Keeps dark-mode classes aligned
     theme: {
       extend: {
         colors: {
-        ink:       'rgb(var(--color-ink) / <alpha-value>)',
-        surface:   'rgb(var(--color-surface) / <alpha-value>)',
-        surface2:  'rgb(var(--color-surface2) / <alpha-value>)',
-        line:      'rgb(var(--color-line) / <alpha-value>)',
-        fg:        'rgb(var(--color-fg) / <alpha-value>)',
-        muted:     'rgb(var(--color-muted) / <alpha-value>)',
-        amber:     'rgb(var(--color-amber) / <alpha-value>)',
-        amberhover:'rgb(var(--color-amberhover) / <alpha-value>)',
-        teal:      'rgb(var(--color-teal) / <alpha-value>)',
-        coral:     'rgb(var(--color-coral) / <alpha-value>)',
-        violet:    'rgb(var(--color-violet) / <alpha-value>)',
-      },
-      fontFamily: {
-        mono: ['"IBM Plex Mono"', 'monospace'],
-        sans: ['"IBM Plex Sans"', 'sans-serif'],
+          ink: 'var(--ink)',
+          surface: 'var(--surface)',
+          surface2: 'var(--surface2)',
+          line: 'var(--line)',
+          fg: 'var(--fg)',
+          muted: 'var(--muted)',
+          amber: 'var(--amber)',
+          amberhover: 'var(--amberhover)',
+          teal: 'var(--teal)',
+          coral: 'var(--coral)',
+          violet: 'var(--violet)',
+        },
+        fontFamily: {
+          mono: ['"IBM Plex Mono"', 'monospace'],
+          sans: ['"IBM Plex Sans"', 'sans-serif'],
+        },
       },
     },
-  },
-};
+  };
 }
 /* =========================================================================
    THEME (light/dark) — runs immediately on load to prevent flash
@@ -156,6 +157,12 @@ const DataStore = (() => {
     if (error) throw error;
   }
 
+  async function signUp(email, password) {
+    const { data, error } = await db().auth.signUp({ email, password });
+    if (error) throw error;
+    return data;
+  }
+
   async function signOut() {
     await db().auth.signOut();
   }
@@ -195,7 +202,7 @@ const DataStore = (() => {
   return {
     getProfile, saveProfile,
     getAll, insert, update, remove,
-    signIn, signOut, getSession, onAuthChange,
+    signIn, signUp, signOut, getSession, onAuthChange,
     uploadFile,
     db,
   };

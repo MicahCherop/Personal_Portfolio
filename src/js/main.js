@@ -77,7 +77,7 @@ function renderProfile() {
   document.getElementById('hero-headline').textContent = p.headline;
   document.getElementById('hero-subhead').textContent  = p.subhead;
   document.getElementById('hero-calendly').href        = p.calendly || '#';
-  document.getElementById('about-photo').src           = p.photo_url || p.photoUrl || 'Cherop.png';
+  document.getElementById('profile-photo').src         = p.photo_url || p.photoUrl || 'assets/Cherop.png';
   document.getElementById('about-bio').textContent     = p.bio;
 
   const resumeBtn = document.getElementById('resume-download');
@@ -112,15 +112,25 @@ function renderProfile() {
   `;
 }
 
+let typeTimeout; // 1. Add a variable to track the timeout
+
 function startTypedLine(text) {
   const el = document.getElementById('typed-line');
   if (!el) return;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduced) { el.textContent = text; return; }
+  
   el.textContent = '';
   let i = 0;
+  
+  clearTimeout(typeTimeout); // 2. Clear any existing typing loops
+  
   const tick = () => {
-    if (i <= text.length) { el.textContent = text.slice(0, i); i++; setTimeout(tick, 35); }
+    if (i <= text.length) { 
+      el.textContent = text.slice(0, i); 
+      i++; 
+      typeTimeout = setTimeout(tick, 35); // 3. Assign the timeout to the variable
+    }
   };
   tick();
 }
