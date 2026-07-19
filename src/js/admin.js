@@ -2,7 +2,58 @@
    admin.js — Admin dashboard (admin.html)
    Uses Supabase Auth for login and Supabase tables for all CRUD.
    ========================================================================= */
+  // src/admin.js
+import { auth } from "./firebase-config.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+// The Bouncer: Checks user status immediately
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    // Not logged in? Kick them to the login page
+    window.location.replace("login.html");
+  } else {
+    // Logged in? Reveal the dashboard
+    document.body.style.display = "block"; 
+  }
+});
+
+// Optional: Add a logout button
+document.getElementById("logout-btn")?.addEventListener("click", () => {
+  signOut(auth).then(() => {
+    window.location.replace("login.html");
+  });
+});
+
+import { db } from "./firebase-config.js";
+import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const form = document.getElementById("add-project-form");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  // Gather the input values
+  const title = document.getElementById("proj-title").value;
+  const desc = document.getElementById("proj-desc").value;
+  const tech = document.getElementById("proj-tech").value;
+  const link = document.getElementById("proj-link").value;
+
+  try {
+    // 'projects' is the name of the collection. Firestore creates it automatically.
+    await addDoc(collection(db, "projects"), {
+      title: title,
+      description: desc,
+      techStack: tech,
+      link: link,
+      createdAt: new Date()
+    });
+    
+    alert("Project added successfully!");
+    form.reset(); // Clear the form
+  } catch (error) {
+    console.error("Error adding document: ", error);
+  }
+});
 /* =========================================================================
    PDF.js (for resume parsing — loaded via CDN in admin.html)
    ========================================================================= */
