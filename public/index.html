@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  tailwind.config = {
+    darkMode: ['class', '[data-theme="dark"]'],
+    theme: {
+      extend: {
+        colors: {
+          ink: 'var(--ink)',
+          surface: 'var(--surface)',
+          surface2: 'var(--surface2)',
+          line: 'var(--line)',
+          fg: 'var(--fg)',
+          muted: 'var(--muted)',
+          amber: 'var(--amber)',
+          amberhover: 'var(--amberhover)',
+          teal: 'var(--teal)',
+          violet: 'var(--violet)',
+          coral: 'var(--coral)',
+        }
+      }
+    }
+  }
+</script>
+<title>Joseph Micah — Personal Portfolio</title>
+<meta name="description" content="Joseph Micah, freelance data scientist. I turn messy spreadsheets and databases into automated reports, live dashboards, and predictive models.">
+<meta name="keywords" content="Data Scientist, Freelance, Python, SQL, Power BI, Machine Learning, Automation, Dashboards, Nairobi">
+<meta property="og:title" content="Joseph Micah — Freelance Data Scientist">
+<meta property="og:description" content="I turn messy data into decisions you can act on.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%23E8A33D%22>◤</text></svg>">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<!-- Supabase JS — must come before data.js -->
+</head>
+<body class="bg-ink text-fg antialiased">
+
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] bg-amber text-ink font-mono text-sm px-4 py-2 rounded">Skip to content</a>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-40 bg-ink/90 backdrop-blur-sm border-b border-line">
+  <nav class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="#top" class="font-mono font-semibold text-lg tracking-tight text-fg">
+      <span class="text-amber">◤</span> Micah<span class="text-muted">.Joseph</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8 font-mono text-sm">
+      <a data-nav href="#services" class="text-muted hover:text-fg">services</a>
+      <a data-nav href="#projects" class="text-muted hover:text-fg">projects</a>
+      <a data-nav href="#resume" class="text-muted hover:text-fg">resume</a>
+      <a data-nav href="#about" class="text-muted hover:text-fg">about</a>
+      <button id="theme-toggle" aria-label="Toggle light and dark theme" class="theme-toggle-track relative w-10 h-5.5 rounded-full border border-line" style="height:22px;">
+        <span class="theme-toggle-thumb absolute top-0.5 left-0.5 w-4 h-4 rounded-full block"></span>
+      </button>
+      <a href="#contact" class="bg-amber hover:bg-amberhover text-ink font-semibold py-2 px-4 rounded">Hire me</a>
+    </div>
+
+    <button id="menu-btn" aria-label="Toggle menu" aria-expanded="false" class="md:hidden text-fg">
+      <svg id="menu-icon-open" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      <svg id="menu-icon-close" class="h-7 w-7 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="hidden md:hidden flex-col bg-surface border-t border-line px-6 py-4 space-y-4 font-mono text-sm">
+    <a data-nav href="#services" class="block text-muted hover:text-fg">services</a>
+    <a data-nav href="#projects" class="block text-muted hover:text-fg">projects</a>
+    <a data-nav href="#resume" class="block text-muted hover:text-fg">resume</a>
+    <a data-nav href="#about" class="block text-muted hover:text-fg">about</a>
+    <div class="flex items-center justify-between">
+      <span class="text-muted">theme</span>
+      <button id="theme-toggle-mobile" aria-label="Toggle light and dark theme" class="theme-toggle-track relative w-10 rounded-full border border-line" style="height:22px;">
+        <span class="theme-toggle-thumb absolute top-0.5 left-0.5 w-4 h-4 rounded-full block"></span>
+      </button>
+    </div>
+    <a href="#contact" class="block bg-amber text-ink font-semibold py-2 px-4 rounded text-center">Hire me</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section id="top" class="relative overflow-hidden border-b border-line bg-grid bg-ink">
+    <div class="absolute inset-0 bg-gradient-to-b from-ink via-ink/95 to-ink"></div>
+    <div class="relative max-w-6xl mx-auto px-6 py-20 md:py-28 grid md:grid-cols-[minmax(0,1fr)_360px] gap-12 items-center">
+      <div>
+        <p class="font-mono text-sm text-teal mb-4">In [01]: <span id="typed-line"></span><span class="typed-cursor">&nbsp;</span></p>
+        <h1 id="hero-headline" class="text-4xl md:text-5xl font-mono font-bold leading-[1.15] text-fg"></h1>
+        <p id="hero-subhead" class="mt-5 text-lg text-muted max-w-xl"></p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#projects" class="bg-amber hover:bg-amberhover text-ink font-semibold py-3 px-7 rounded text-base">See my work</a>
+          <a id="hero-calendly" href="#" target="_blank" rel="noopener" class="border border-line hover:border-teal text-fg font-semibold py-3 px-7 rounded text-base">Book a call</a>
+        </div>
+        <div class="mt-10 flex gap-8 font-mono text-sm" id="hero-stats"></div>
+      </div>
+
+      <div class="hero-photo-wrap justify-self-center md:justify-self-end">
+        <img id="profile-photo" src="assets/Cherop.png" alt="Joseph Micah" class="hero-photo">
+      </div>
+      <div class="hidden" aria-hidden="true">
+        <svg viewBox="0 0 420 260" class="w-full h-auto">
+          <g class="scatter fill-teal" opacity=".55">
+            <circle cx="40" cy="190" r="4"/><circle cx="70" cy="80" r="4"/><circle cx="95" cy="150" r="4"/>
+            <circle cx="120" cy="60" r="4"/><circle cx="150" cy="170" r="4"/><circle cx="175" cy="100" r="4"/>
+            <circle cx="205" cy="190" r="4"/><circle cx="230" cy="50" r="4"/><circle cx="255" cy="140" r="4"/>
+            <circle cx="285" cy="200" r="4"/><circle cx="305" cy="70" r="4"/><circle cx="335" cy="160" r="4"/>
+            <circle cx="365" cy="40" r="4"/><circle cx="385" cy="120" r="4"/>
+          </g>
+          <path class="draw-line stroke-amber" d="M20,210 C100,150 140,210 200,130 C260,60 320,90 400,30" fill="none" stroke-width="3" stroke-linecap="round"/>
+          <line x1="20" y1="230" x2="400" y2="230" class="stroke-line" stroke-width="1"/>
+          <line x1="20" y1="20" x2="20" y2="230" class="stroke-line" stroke-width="1"/>
+          <text x="20" y="248" class="fill-muted" font-family="IBM Plex Mono" font-size="11">raw signal</text>
+          <text x="320" y="22" class="fill-amber" font-family="IBM Plex Mono" font-size="11">trend ↗</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="max-w-6xl mx-auto px-6 py-24">
+    <div class="cell reveal">
+      <p class="font-mono text-sm text-teal mb-2">In [02]: list_services()</p>
+      <h2 class="text-3xl font-mono font-bold text-fg mb-12">How I can help</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-surface border border-line p-7 rounded">
+          <p class="chip text-amber mb-3">01 · automation</p>
+          <h3 class="text-lg font-semibold text-fg mb-2">Spreadsheet &amp; report automation</h3>
+          <p class="text-muted text-sm leading-relaxed">I automate recurring work in Google Sheets and Excel with Python, so reports build themselves instead of eating your week.</p>
+        </div>
+        <div class="bg-surface border border-line p-7 rounded">
+          <p class="chip text-teal mb-3">02 · dashboards</p>
+          <h3 class="text-lg font-semibold text-fg mb-2">Interactive BI dashboards</h3>
+          <p class="text-muted text-sm leading-relaxed">I design Power BI and Looker Studio dashboards that surface the KPIs you actually check, updated in real time.</p>
+        </div>
+        <div class="bg-surface border border-line p-7 rounded">
+          <p class="chip text-violet mb-3">03 · sql</p>
+          <h3 class="text-lg font-semibold text-fg mb-2">Data gathering &amp; SQL querying</h3>
+          <p class="text-muted text-sm leading-relaxed">I write efficient SQL against large, messy databases to pull exactly the answer you're looking for, nothing more.</p>
+        </div>
+        <div class="bg-surface border border-line p-7 rounded">
+          <p class="chip text-coral mb-3">04 · ml</p>
+          <h3 class="text-lg font-semibold text-fg mb-2">Predictive modeling</h3>
+          <p class="text-muted text-sm leading-relaxed">I build machine learning models that forecast demand, flag risk, and surface the patterns spreadsheets hide.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="max-w-6xl mx-auto px-6 py-24 border-t border-line">
+    <div class="cell reveal">
+      <p class="font-mono text-sm text-teal mb-2">In [03]: show_projects()</p>
+      <h2 class="text-3xl font-mono font-bold text-fg mb-10">Project portfolio</h2>
+      <div id="project-filters" class="flex flex-wrap gap-2 mb-8 font-mono text-xs"></div>
+      <div id="projects-grid" class="grid md:grid-cols-2 gap-6"></div>
+      <p id="projects-empty" class="hidden text-muted font-mono text-sm">No projects yet — check back soon.</p>
+    </div>
+  </section>
+
+  <!-- RESUME -->
+  <section id="resume" class="max-w-6xl mx-auto px-6 py-24 border-t border-line">
+    <div class="cell reveal">
+      <p class="font-mono text-sm text-teal mb-2">In [04]: print(resume)</p>
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-12">
+        <h2 class="text-3xl font-mono font-bold text-fg">Resume</h2>
+        <a id="resume-download" href="#" target="_blank" rel="noopener" class="border border-line hover:border-amber text-fg font-mono text-sm py-2.5 px-5 rounded opacity-50 pointer-events-none">↓ Download PDF</a>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="md:col-span-2 space-y-10">
+          <div>
+            <h3 class="font-mono text-sm tracking-widest text-muted uppercase mb-5">Experience</h3>
+            <div id="experience-list" class="space-y-7"></div>
+          </div>
+          <div>
+            <h3 class="font-mono text-sm tracking-widest text-muted uppercase mb-5">Education</h3>
+            <div id="education-list" class="space-y-7"></div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-mono text-sm tracking-widest text-muted uppercase mb-5">Skills</h3>
+          <div id="skills-list" class="space-y-5"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="max-w-6xl mx-auto px-6 py-24 border-t border-line">
+    <div class="cell reveal">
+      <p class="font-mono text-sm text-teal mb-2">In [05]: whoami()</p>
+      <h2 class="text-3xl font-mono font-bold text-fg mb-8">A bit about me</h2>
+      <div class="grid gap-10 items-start">
+        <p id="about-bio" class="text-muted leading-relaxed text-base"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS (hidden until at least one exists) -->
+  <section id="testimonials" class="max-w-6xl mx-auto px-6 py-24 border-t border-line hidden">
+    <div class="cell reveal">
+      <p class="font-mono text-sm text-teal mb-2">In [06]: client_feedback()</p>
+      <h2 class="text-3xl font-mono font-bold text-fg mb-10">What clients say</h2>
+      <div id="testimonials-grid" class="grid md:grid-cols-3 gap-6"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- CONTACT -->
+<section id="contact" class="border-t border-line bg-surface">
+  <div class="max-w-6xl mx-auto px-6 py-24">
+    <p class="font-mono text-sm text-teal mb-2">In [07]: send_message()</p>
+    <h2 class="text-3xl font-mono font-bold text-fg mb-3">Ready to unlock your data's potential?</h2>
+    <p class="text-muted mb-10 max-w-xl">Tell me about the problem — I'll reply within a day with how I'd approach it.</p>
+
+    <div class="grid md:grid-cols-2 gap-12">
+      <form id="contact-form" class="space-y-5" novalidate>
+        <div>
+          <label for="cf-name" class="block font-mono text-xs text-muted mb-1.5">name</label>
+          <input id="cf-name" name="name" type="text" required class="w-full bg-ink border border-line rounded px-4 py-3 text-fg placeholder:text-muted/60 focus:border-amber outline-none" placeholder="Your name">
+        </div>
+        <div>
+          <label for="cf-email" class="block font-mono text-xs text-muted mb-1.5">email</label>
+          <input id="cf-email" name="email" type="email" required class="w-full bg-ink border border-line rounded px-4 py-3 text-fg placeholder:text-muted/60 focus:border-amber outline-none" placeholder="you@company.com">
+        </div>
+        <div>
+          <label for="cf-message" class="block font-mono text-xs text-muted mb-1.5">message</label>
+          <textarea id="cf-message" name="message" rows="4" required class="w-full bg-ink border border-line rounded px-4 py-3 text-fg placeholder:text-muted/60 focus:border-amber outline-none" placeholder="What are you trying to solve?"></textarea>
+        </div>
+        <p id="cf-status" class="font-mono text-xs text-teal hidden" role="status"></p>
+        <button type="submit" class="bg-amber hover:bg-amberhover text-ink font-semibold py-3 px-7 rounded">Send message</button>
+      </form>
+
+      <div class="space-y-4">
+        <a id="contact-email" href="#" class="flex items-center gap-3 bg-ink border border-line hover:border-amber rounded px-5 py-4 text-fg font-mono text-sm"><span>✉</span><span id="contact-email-text"></span></a>
+        <a id="contact-calendly" href="#" target="_blank" rel="noopener" class="flex items-center gap-3 bg-ink border border-line hover:border-teal rounded px-5 py-4 text-fg font-mono text-sm"><span>📅</span><span>Book a call on Calendly</span></a>
+        <a id="contact-whatsapp" href="#" target="_blank" rel="noopener" class="flex items-center gap-3 bg-ink border border-line hover:border-teal rounded px-5 py-4 text-fg font-mono text-sm"><span>💬</span><span>Chat on WhatsApp</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-line">
+  <div class="max-w-6xl mx-auto px-6 py-10 flex flex-wrap items-center justify-between gap-6">
+    <p class="font-mono text-xs text-muted">© <span id="footer-year"></span> Joseph Micah. Built with data, not templates.</p>
+    <div class="flex items-center gap-5">
+      <a id="footer-linkedin" href="#" target="_blank" rel="noopener" aria-label="LinkedIn profile" class="text-muted hover:text-amber">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.74c0-1.42-.6-2.16-1.75-2.16-1.36 0-1.75.91-1.75 2.16V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c3.07 0 3.25 2.16 3.25 5.16z"/></svg>
+      </a>
+      <a id="footer-github" href="#" target="_blank" rel="noopener" aria-label="GitHub profile" class="text-muted hover:text-amber">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 002 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 01.1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0022 12 10 10 0 0012 2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<button id="back-to-top" aria-label="Back to top" class="hidden fixed bottom-6 right-6 z-30 bg-surface border border-line hover:border-amber text-fg w-11 h-11 rounded-full font-mono">↑</button>
+
+<dialog id="dlg-project">
+  <div class="bg-surface border border-line rounded-lg w-[92vw] max-w-lg max-h-[85vh] overflow-y-auto p-7">
+    <div class="flex items-start justify-between mb-4">
+      <p class="chip text-muted">Out [<span id="pview-id"></span>]:</p>
+      <button data-close-dialog class="text-muted hover:text-fg text-xl leading-none">×</button>
+    </div>
+    <img id="pview-image" class="w-full h-44 object-cover rounded mb-5 hidden border border-line" alt="">
+    <h3 id="pview-title" class="text-2xl font-mono font-bold text-fg mb-4"></h3>
+    <div class="space-y-3 text-sm">
+      <p><span class="text-amber font-mono">Problem </span><span id="pview-problem" class="text-muted"></span></p>
+      <p><span class="text-teal font-mono">Solution </span><span id="pview-solution" class="text-muted"></span></p>
+      <p><span class="text-coral font-mono">Result </span><span id="pview-result" class="text-muted"></span></p>
+    </div>
+    <div id="pview-tags" class="flex flex-wrap gap-2 mt-5"></div>
+    <a id="pview-link" href="#" target="_blank" rel="noopener" class="hidden mt-6 inline-block bg-amber text-ink font-semibold px-5 py-2.5 rounded">View project ↗</a>
+  </div>
+</dialog>
+
+<!-- 1. Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<!-- 2. Your Data Layer & Utilities -->
+<script src="js/data.js"></script>
+
+<!-- 3. Your Interface Engine (This file) -->
+<script src="js/main.js"></script>
+</body>
+</html>

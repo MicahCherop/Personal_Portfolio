@@ -1,0 +1,191 @@
+/* =========================================
+   THEME VARIABLES
+========================================= */
+:root {
+  /* Dark Theme (Default) */
+  --ink: #0f111a;
+  --surface: #161822;
+  --surface2: #1f2230;
+  --line: #2b2f40;
+  --fg: #e2e8f0;
+  --muted: #94a3b8;
+  --amber: #E8A33D;
+  --amberhover: #d18d2b;
+  --teal: #4bd3c2;
+  --violet: #b392f0;
+  --coral: #f07178;
+}
+
+[data-theme="light"] {
+  /* Light Theme */
+  --ink: #f8f9fa;
+  --surface: #ffffff;
+  --surface2: #f1f5f9;
+  --line: #e2e8f0;
+  --fg: #0f111a;
+  --muted: #64748b;
+  --amber: #d97706;
+  --amberhover: #b45309;
+  --teal: #0d9488;
+  --violet: #7c3aed;
+  --coral: #e11d48;
+}
+
+/* =========================================
+   BASE STYLES & SCROLLBAR
+========================================= */
+body {
+  background-color: var(--ink);
+  color: var(--fg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ink);
+  border-left: 1px solid var(--line);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* =========================================
+   ADMIN DASHBOARD SPECIFIC
+========================================= */
+/* Tab Switcher Interactive States */
+.admin-tab {
+  transition: all 0.2s ease;
+  color: var(--muted);
+}
+
+.admin-tab:hover {
+  color: var(--fg);
+}
+
+.admin-tab.is-active {
+  background-color: var(--surface2);
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+/* Modal/Dialog Overlays */
+body.modal-open {
+  overflow: hidden;
+}
+
+dialog::backdrop {
+  background-color: rgba(15, 17, 26, 0.85);
+  backdrop-filter: blur(4px);
+}
+
+[data-theme="light"] dialog::backdrop {
+  background-color: rgba(248, 249, 250, 0.85);
+}
+
+/* =========================================
+   MAIN PORTFOLIO SPECIFIC
+========================================= */
+/* Blueprint Grid Background */
+.bg-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-position: center top;
+  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+}
+
+.chip {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: var(--surface2);
+  border: 1px solid var(--line);
+}
+
+.hero-photo-wrap {
+  width: min(100%, 360px);
+}
+
+.hero-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 14px 14px 0 var(--surface2);
+}
+
+@media (max-width: 767px) {
+  .hero-photo-wrap {
+    width: min(78vw, 280px);
+    grid-row: 1;
+  }
+
+  .hero-photo {
+    box-shadow: 8px 8px 0 var(--surface2);
+  }
+}
+
+/* Terminal Typing Cursor */
+.typed-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.2em;
+  background-color: var(--teal);
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Theme Toggle Switch Animation */
+.theme-toggle-thumb {
+  background-color: var(--amber);
+  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+[data-theme="light"] .theme-toggle-thumb {
+  transform: translateX(18px);
+}
+
+/* SVG Hero Graph Animations */
+.draw-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw 2.5s ease-out forwards 0.5s;
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.scatter circle {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.scatter circle:nth-child(1) { animation-delay: 0.1s; }
+.scatter circle:nth-child(2) { animation-delay: 0.4s; }
+.scatter circle:nth-child(3) { animation-delay: 0.2s; }
+.scatter circle:nth-child(4) { animation-delay: 0.6s; }
+.scatter circle:nth-child(5) { animation-delay: 0.3s; }
+.scatter circle:nth-child(n+6) { animation-delay: 0.7s; }
+
+@keyframes pop {
+  to { transform: scale(1); opacity: 1; }
+}
